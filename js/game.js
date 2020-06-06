@@ -5,6 +5,10 @@ DictionaryGame.map = DictionaryGame.map || {};
 
 (function gameScopeWrapper($) {
     var authToken;
+    var moves = 0;
+    var start;
+    var end;
+
     DictionaryGame.authToken.then(function setAuthToken(token) {
         if (token) {
             authToken = token;
@@ -55,8 +59,11 @@ DictionaryGame.map = DictionaryGame.map || {};
 
     function completeGameSetup(result) {
         console.log('Response received from API: ', result);
-        parameterUpdate("Start: End:"); // Start and end words from api
-        bodyUpdate(result); // The start word, in the body (and therefore linked)
+        moves = 0;
+        start = normalizeWord("startword");
+        end = normalizeWord("endword");
+        parameterUpdate("Start: " + start + "End: " + end); // Start and end words from api
+        bodyUpdate(start); // The start word, in the body (and therefore linked)
     }
 
     function completeRequest(result) {
@@ -80,16 +87,30 @@ DictionaryGame.map = DictionaryGame.map || {};
         }
     });
 
+    function normalizeWord(word) {
+        var s = word.toLowerCase();
+        var punctuationless = s.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
+        var finalString = punctuationless.replace(/\s{2,}/g," ");
+        return finalString;
+    }
+
     function handleRequestClick(event) {
         // TODO -- loading?
         $('#main').empty();
-        nextWord(event.data);
+        moves = moves + 1;
+        var word = normalizeWord(event.data);
+        if (word.localeCompare(end) == 0) {
+            winScreen();
+            return;
+        }
+        nextWord(word);
     }
 
     function bodyUpdate(text) {
         // clear the #main div
         $('#main').empty();
-    	var body = $("#main");
+        var body = $("#main");
+        body.append($("<p>Moves: "+moves+"</p>"));
         var words = text.split(" ");
         // for each word 
         for(i = 0; i < words.length; i++) {
@@ -101,7 +122,17 @@ DictionaryGame.map = DictionaryGame.map || {};
         }
     }
 
+    function winScreen() {
+        $('#main').empty();
+        var body = $("#main");
+        body.append($("<h2>You won in "+ moves +" moves!</h2>"));
+        body.append($("<a> Click here to start a new game </a>").click(function() {
+            gameSetup();
+        }));
+    }
+
     function parameterUpdate(text){
+        $('#goal_words').empty();
         $('#goal_words').append($('<p>' + text + '</p>'));
     }
 }(jQuery));
