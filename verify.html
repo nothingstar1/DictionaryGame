@@ -44,16 +44,22 @@
             <ul class="navbar-nav mx-auto h-100">
               <li class="nav-item">
                 <a class="nav-link" href="index.html">
-                  Dashboard
-                  <span class="sr-only">(current)</span>
+                    Home
+                    <span class="sr-only">(current)</span>
                 </a>
-              </li>
+            </li>
 
-              <li class="nav-item">
-                <a class="nav-link active" href="about.html">
-                  About
+            <li class="nav-item">
+                <a class="nav-link" href="game.html">
+                    Game
                 </a>
-              </li>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="about.html">
+                    About
+                </a>
+            </li>
             </ul>
           </div>
         </div>
@@ -72,14 +78,14 @@
             <div class="row mt-2">
               <div class="col-12">
                 <section class="form-wrap">
-                  <h1>Sign In</h1>
-                  <form id="signinForm">
-                    <input type="email" id="emailInputSignin" placeholder="Email" required>
-                    <input type="password" id="passwordInputSignin" placeholder="Password" pattern=".*" required>
+                  <h1>Verify Email</h1>
+                  <form id="verifyForm">
+                    <input type="email" id="emailInputVerify" placeholder="Email" required>
+                    <input type="text" id="codeInputVerify" placeholder="Verification Code" pattern=".*" required>
       
-                    <input type="submit" value="Sign in">
+                    <input type="submit" value="Verify">
                   </form>
-              </section>
+                </section>
               </div>
             </div>
           </div>
@@ -99,5 +105,11 @@
     <!-- https://jquery.com/download/ -->
     <script src="js/bootstrap.min.js"></script>
     <!-- https://getbootstrap.com/ -->
+    <script src="js/vendor/jquery-3.1.0.js"></script>
+    <script src="js/vendor/bootstrap.min.js"></script>
+    <script src="js/vendor/aws-cognito-sdk.min.js"></script>
+    <script src="js/vendor/amazon-cognito-identity.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/cognito-auth.js"></script>
   </body>
 </html>
