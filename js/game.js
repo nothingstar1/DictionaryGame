@@ -55,7 +55,7 @@ DictionaryGame.map = DictionaryGame.map || {};
 
     function completeGameSetup(result) {
         console.log('Response received from API: ', result);
-        bodyUpdate(result);
+        parameterUpdate(result);
     }
 
     function completeRequest(result) {
@@ -80,12 +80,25 @@ DictionaryGame.map = DictionaryGame.map || {};
     });
 
     function handleRequestClick(event) {
-        // TODO
-        nextWord("test");
+        // TODO -- loading?
+        $('#main').empty();
+        nextWord(event.data);
     }
 
     function bodyUpdate(text) {
-        $('#main').append($('<p>' + text + '</p>'));
+        // clear the #main div
+        $('#main').empty();
+        $('#main').append("<p></p>");
+    		var body = $("p");
+        var words = text.split(" ");
+        // for each word 
+        for(i = 0; i < words.length; i++) {
+        	var word = words[i];
+        	body.append($("<a>" + word +" </a>").click(word, function(a) {
+          	handleRequestClick(a);
+          }));
+        }
+        $('#main').append(body);
     }
 
     function parameterUpdate(text){
