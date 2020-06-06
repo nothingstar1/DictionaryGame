@@ -55,7 +55,8 @@ DictionaryGame.map = DictionaryGame.map || {};
 
     function completeGameSetup(result) {
         console.log('Response received from API: ', result);
-        parameterUpdate(result);
+        parameterUpdate("Start: End:"); // Start and end words from api
+        bodyUpdate(result); // The start word, in the body (and therefore linked)
     }
 
     function completeRequest(result) {

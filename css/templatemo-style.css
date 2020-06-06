@@ -25,6 +25,15 @@ a:hover {
 button:focus {
   outline: 0;
 }
+
+#main {
+  color: #fff
+}
+
+#goal_words {
+  color: #9be64d
+}
+
 .navbar-brand {
   display: flex;
   align-items: center;
