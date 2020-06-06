@@ -89,8 +89,7 @@ DictionaryGame.map = DictionaryGame.map || {};
     function bodyUpdate(text) {
         // clear the #main div
         $('#main').empty();
-        $('#main').append("<p></p>");
-    		var body = $("p");
+    	var body = $("#main");
         var words = text.split(" ");
         // for each word 
         for(i = 0; i < words.length; i++) {
@@ -98,8 +97,8 @@ DictionaryGame.map = DictionaryGame.map || {};
         	body.append($("<a>" + word +" </a>").click(word, function(a) {
           	handleRequestClick(a);
           }));
+            // if you don't want a word linked, do append(word), plain, just like that
         }
-        $('#main').append(body);
     }
 
     function parameterUpdate(text){
