@@ -55,12 +55,12 @@ DictionaryGame.map = DictionaryGame.map || {};
 
     function completeGameSetup(result) {
         console.log('Response received from API: ', result);
-        bodyUpdate(result.word);
+        bodyUpdate(result);
     }
 
     function completeRequest(result) {
         console.log('Response received from API: ', result);
-        bodyUpdate(result.word);
+        bodyUpdate(result);
     }
 
     // Register click handler for #request button
@@ -69,7 +69,7 @@ DictionaryGame.map = DictionaryGame.map || {};
 
         DictionaryGame.authToken.then(function updateAuthMessage(token) {
             if (token) {
-                bodyUpdate('You are authenticated. Click to see your <a href="#authTokenModal" data-toggle="modal">auth token</a>.');
+                bodyUpdate('You are authenticated.');
                 $('.authToken').text(token);
             }
         });
