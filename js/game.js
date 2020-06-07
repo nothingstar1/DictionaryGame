@@ -88,6 +88,7 @@ DictionaryGame.map = DictionaryGame.map || {};
         end = normalizeWord(result['end_word']);
         parameterUpdate("Start: " + start + " End: " + end); // Start and end words from api
         $('#main').empty();
+        $('#main').append($('<p>Click the word to start: </p>'));
         bodyAppend([start]); // The start word, in the body (and therefore linked)
     }
 
