@@ -17,6 +17,62 @@
 	Product Admin CSS Template
 	https://templatemo.com/tm-524-product-admin
 	-->
+
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js"></script>
+
+<script type="text/javascript">
+//TODO change access IDs to use Amazon cognito
+AWS.config.update({
+  region: "us-west-2",
+  endpoint: 'http://localhost:8000',
+  // accessKeyId default can be used while using the downloadable version of DynamoDB.
+  // For security reasons, do not store AWS Credentials in your files. Use Amazon Cognito instead.
+
+  accessKeyId: "AKIAWMLISECFI7JBM7AD",
+  // secretAccessKey default can be used while using the downloadable version of DynamoDB.
+  // For security reasons, do not store AWS Credentials in your files. Use Amazon Cognito instead.
+  secretAccessKey: "jks2fuo6oZAkYNP1wOzsJDEJOWfIZSgGoiulePaS"
+});
+
+var docClient = new AWS.DynamoDB.DocumentClient();
+
+function processFile(evt) {
+    document.getElementById('textarea').innerHTML = "";
+    document.getElementById('textarea').innerHTML += "Importing use statistics from DnamoDB. Please wait..." + "\n";
+    var file = evt.target.files[0];
+    if (file) {
+        var r = new FileReader();
+        r.onload = function(e) {
+            var contents = e.target.result;
+            var allResults = JSON.parse(contents);
+
+            allResults.forEach(function (result) {
+                document.getElementById('textarea').innerHTML += "Processing: " + result.title + "\n";
+                var params = {
+                    TableName: "Times accessed",
+                    Item: {
+                        "word": result.word,
+                        "clicks": result.clicks,
+                    }
+                };
+                docClient.put(params, function (err, data) {
+                    if (err) {
+                        document.getElementById('textarea').innerHTML += "Unable to add word: " + count + result.word + "\n";
+                        document.getElementById('textarea').innerHTML += "Error JSON: " + JSON.stringify(err) + "\n";
+                    } else {
+                        document.getElementById('textarea').innerHTML += "PutItem succeeded: " + result.word + "\n";
+                        textarea.scrollTop = textarea.scrollHeight;
+                    }
+                });
+            });
+    };
+        r.readAsText(file);
+    } else {
+        alert("Could not read movie data file");
+    }
+}
+
+</script>
 </head>
 
 <body id="reportsPage">
@@ -57,13 +113,18 @@
 
         </nav>
         <div class="container">
-            
+          <input type="file" id="fileinput" accept='application/json'/>
+          <br><br>
+          <textarea readonly id= "textarea" style="width:800px; height:400px"></textarea>
+          <script>
+            document.getElementById('fileinput').addEventListener('change', processFile, false);
+          </script>
         </div>
         <footer class="tm-footer row tm-mt-small">
             <div class="col-12 font-weight-light">
                 <p class="text-center text-white mb-0 px-4 small">
-                    Copyright &copy; <b>2018</b> All rights reserved. 
-                    
+                    Copyright &copy; <b>2018</b> All rights reserved.
+
                     Design: <a rel="nofollow noopener" href="https://templatemo.com" class="tm-footer-link">Template Mo</a>
                 </p>
             </div>
