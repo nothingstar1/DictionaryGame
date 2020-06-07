@@ -57,30 +57,47 @@ DictionaryGame.map = DictionaryGame.map || {};
         });
     }
 
+    // username??!
+    function saveWin() {
+        $.ajax({
+            method: 'POST',
+            url: _config.api.invokeUrl + '/word',
+            headers: {
+                Authorization: authToken
+            },
+            data: JSON.stringify({
+                score: moves
+            }),
+            contentType: 'application/json',
+            success: completeRequest, // use a different function
+            error: function ajaxError(jqXHR, textStatus, errorThrown) {
+                console.error('Error requesting word: ', textStatus, ', Details: ', errorThrown);
+                console.error('Response: ', jqXHR.responseText);
+                alert('An error occured when getting the next word:\n' + jqXHR.responseText);
+            }
+        });
+    }
+
     function completeGameSetup(result) {
         console.log('Response received from API: ', result);
         moves = 0;
-        start = normalizeWord("startword");
-        end = normalizeWord("endword");
+        start = normalizeWord("horse");
+        end = normalizeWord("bat");
         parameterUpdate("Start: " + start + "End: " + end); // Start and end words from api
-        bodyUpdate(start); // The start word, in the body (and therefore linked)
+        bodyUpdate([start]); // The start word, in the body (and therefore linked)
     }
 
     function completeRequest(result) {
         console.log('Response received from API: ', result);
-        bodyUpdate(result);
+        words = result['Associated words'];
+        bodyUpdate(words);
     }
 
     // Register click handler for #request button
     $(function onDocReady() {
         gameSetup();
 
-        DictionaryGame.authToken.then(function updateAuthMessage(token) {
-            if (token) {
-                bodyUpdate('You are authenticated.');
-                $('.authToken').text(token);
-            }
-        });
+        DictionaryGame.authToken.then();
 
         if (!_config.api.invokeUrl) {
             $('#noApiMessage').show();
@@ -106,12 +123,11 @@ DictionaryGame.map = DictionaryGame.map || {};
         nextWord(word);
     }
 
-    function bodyUpdate(text) {
+    function bodyUpdate(words) {
         // clear the #main div
         $('#main').empty();
         var body = $("#main");
         body.append($("<p>Moves: "+moves+"</p>"));
-        var words = text.split(" ");
         // for each word 
         for(i = 0; i < words.length; i++) {
         	var word = words[i];
