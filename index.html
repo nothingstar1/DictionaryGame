@@ -37,7 +37,7 @@ AWS.config.update({
 var docClient = new AWS.DynamoDB.DocumentClient();
 
 function processFile(evt) {
-    document.getElementById('textarea').innerHTML = "";
+    // document.getElementById('textarea').innerHTML = "";
     document.getElementById('textarea').innerHTML += "Importing use statistics from DnamoDB. Please wait..." + "\n";
     var file = evt.target.files[0];
     if (file) {
