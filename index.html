@@ -38,11 +38,11 @@ var docClient = new AWS.DynamoDB.DocumentClient();
 
 function scanData(){
 
-    document.getElementById('textarea').innerHTML += "Scanning Movies table." + "\n";
+    document.getElementById('textarea').innerHTML += "Scanning Words table." + "\n";
 
     var params = {
       TableName: "Words"
-      ProjectionExpression: "clicks"
+      ProjectionExpression: "word, clicks"
     };
     docClient.scan(params, onScan);
 
