@@ -110,6 +110,10 @@ function onScan(err, data){
 
 <body id="reportsPage">
     <div class="" id="home">
+        <input id="scanData" type="button" value="Scan" onclick="scanData();" />
+        <br><br>
+        <textarea readonly id= "textarea" style="width:800px; height:400px"></textarea>
+
         <nav class="navbar navbar-expand-xl">
             <div class="container h-100">
                 <a class="navbar-brand" href="index.html">
@@ -147,13 +151,7 @@ function onScan(err, data){
         </nav>
 
         <div class="container">
-          <!-- <input type="file" id="fileinput" accept='application/json'/> -->
-          <input id="scanData" type="button" value="Scan" onclick="scanData();" />
-          <br><br>
-          <textarea readonly id= "textarea" style="width:800px; height:400px"></textarea>
-          <!-- <script>
-            document.getElementById('fileinput').addEventListener('change', processFile, false);
-          </script> -->
+
 
         </div>
         <footer class="tm-footer row tm-mt-small">
