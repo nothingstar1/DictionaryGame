@@ -83,9 +83,9 @@ DictionaryGame.map = DictionaryGame.map || {};
     function completeGameSetup(result) {
         console.log('Response received from API: ', result);
         moves = 0;
-        start = normalizeWord(result['start_word']);
+        start = 'horse'; //normalizeWord(result['start_word']);
         current = start;
-        end = normalizeWord(result['end_word']);
+        end = 'animal'; //normalizeWord(result['end_word']);
         parameterUpdate("Start: " + start + " End: " + end); // Start and end words from api
         $('#main').empty();
         $('#main').append($('<p>Click the word to start: </p>'));
@@ -132,6 +132,7 @@ DictionaryGame.map = DictionaryGame.map || {};
         moves = moves + 1;
         var word = normalizeWord(event.data);
         if (word.localeCompare(end) == 0) {
+            saveWin();
             winScreen();
             return;
         }
