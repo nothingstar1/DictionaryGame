@@ -10,6 +10,7 @@ DictionaryGame.map = DictionaryGame.map || {};
     var start;
     var end;
     var current;
+    var previous;
 
     DictionaryGame.authToken.then(function setAuthToken(token) {
         if (token) {
@@ -94,6 +95,12 @@ DictionaryGame.map = DictionaryGame.map || {};
 
     function completeRequest(result) {
         console.log('Response received from API: ', result);
+        $('#main').empty();
+        $('#main').append($("<p>Moves: "+moves+" Current word: "+current+"</p>"));
+        if (! result.hasOwnProperty('Associated words')) {
+           $('#main').append($("<p>" + current +" doesn't seem to have a definition! Here's your previous word:</p>"));
+           bodyAppend([previous]);
+        }
         words = result['Associated words'];
         definitions = result['Definitions'];
         $('#main').empty();
@@ -110,6 +117,9 @@ DictionaryGame.map = DictionaryGame.map || {};
 
     function completeWinSave(result) {
         var body = $("#main");
+        // If no 'score' in result, return
+        if (! result.hasOwnProperty("score"))
+            return;
         score = result['score']
         highscore = result['highscore']
         num_games = result['num_games']
@@ -143,6 +153,7 @@ DictionaryGame.map = DictionaryGame.map || {};
             saveWin();
             return;
         }
+        previous = current;
         current = word;
         nextWord(word);
     }
