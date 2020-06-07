@@ -87,13 +87,27 @@ DictionaryGame.map = DictionaryGame.map || {};
         current = start;
         end = normalizeWord("bat");
         parameterUpdate("Start: " + start + "End: " + end); // Start and end words from api
-        bodyUpdate([start]); // The start word, in the body (and therefore linked)
+        $('#main').empty();
+        bodyAppend([start]); // The start word, in the body (and therefore linked)
     }
 
     function completeRequest(result) {
         console.log('Response received from API: ', result);
         words = result['Associated words'];
-        bodyUpdate(words);
+        definitions = result['Definitions'];
+        $('#main').empty();
+        $('#main').append($("<p>Moves: "+moves+" Current word: "+current+"</p>"));
+        $('#main').append($('<h3>Related Words</h3>'));
+        bodyAppend(words);
+        $('#main').append($('<h3>Definitions</h3>'));
+        for(j = 0; j < definitions.length; j++) {
+            definition_words = definitions[j].split(" ");
+            bodyAppend(definition_words);
+            $('#main').append($('<br>'));
+            console.log('looping');
+            console.log(definitions);
+            console.log(j);
+        }
     }
 
     // Register click handler for #request button
@@ -127,11 +141,8 @@ DictionaryGame.map = DictionaryGame.map || {};
         nextWord(word);
     }
 
-    function bodyUpdate(words) {
-        // clear the #main div
-        $('#main').empty();
+    function bodyAppend(words) {
         var body = $("#main");
-        body.append($("<p>Moves: "+moves+" Current word: "+current+"</p>"));
         // for each word 
         for(i = 0; i < words.length; i++) {
         	var word = words[i];
