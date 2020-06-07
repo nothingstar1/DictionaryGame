@@ -18,57 +18,6 @@
 	https://templatemo.com/tm-524-product-admin
 	-->
 
-<script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js"></script>
-
-<script type="text/javascript">
-//TODO change access IDs to use Amazon cognito
-AWS.config.update({
-  region: "us-west-2",
-  endpoint: 'http://localhost:8000',
-  // accessKeyId default can be used while using the downloadable version of DynamoDB.
-  // For security reasons, do not store AWS Credentials in your files. Use Amazon Cognito instead.
-
-  accessKeyId: "AKIAWMLISECFI7JBM7AD",
-  // secretAccessKey default can be used while using the downloadable version of DynamoDB.
-  // For security reasons, do not store AWS Credentials in your files. Use Amazon Cognito instead.
-  secretAccessKey: "jks2fuo6oZAkYNP1wOzsJDEJOWfIZSgGoiulePaS"
-});
-
-var docClient = new AWS.DynamoDB.DocumentClient();
-
-function scanData(){
-
-    document.getElementById('textarea').innerHTML += "Scanning Words table." + "\n";
-
-    var params = {
-      TableName: "Words"
-      ProjectionExpression: "word, clicks"
-    };
-    docClient.scan(params, onScan);
-
-
-
-  function onScan(err, data){
-
-        if (err) {
-            document.getElementById('textarea').innerHTML += "Unable to scan the table: " + "\n" + JSON.stringify(err, undefined, 2);
-        } else {
-            // Print all the movies
-            document.getElementById('textarea').innerHTML += "Scan succeeded. " + "\n";
-            data.Items.forEach(function(word) {
-                document.getElementById('textarea').innerHTML += Words.word + " has been accessed" + Words.clicks + " times. ";
-            });
-
-            // Continue scanning if we have more movies (per scan 1MB limitation)
-            document.getElementById('textarea').innerHTML += "Scanning for more..." + "\n";
-            params.ExclusiveStartKey = data.LastEvaluatedKey;
-            docClient.scan(params, onScan);
-        }
-    }
-
-}
-
-</script>
 </head>
 
 <body id="reportsPage">
@@ -110,10 +59,7 @@ function scanData(){
         </nav>
 
         <div class="container">
-          <input id="scanData" type="button" value="Scan" onclick="scanData();" />
-          <br><br>
-          <textarea readonly id= "textarea" style="width:800px; height:400px"></textarea>
-
+        
         </div>
         <footer class="tm-footer row tm-mt-small">
             <div class="col-12 font-weight-light">
