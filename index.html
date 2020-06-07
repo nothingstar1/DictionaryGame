@@ -36,6 +36,38 @@ AWS.config.update({
 
 var docClient = new AWS.DynamoDB.DocumentClient();
 
+function scanData(){
+
+    document.getElementById('textarea').innerHTML += "Scanning Movies table." + "\n";
+
+    var params = {
+      TableName: "Words"
+      ProjectionExpression: "clicks"
+    }
+    docClient.scan(params, onScan);
+
+}
+
+function onScan(err, data){
+
+      if (err) {
+          document.getElementById('textarea').innerHTML += "Unable to scan the table: " + "\n" + JSON.stringify(err, undefined, 2);
+      } else {
+          // Print all the movies
+          document.getElementById('textarea').innerHTML += "Scan succeeded. " + "\n";
+          data.Items.forEach(function(word) {
+              document.getElementById('textarea').innerHTML += Words.word + " has been accessed" + Words.clicks + " times. ";
+          });
+
+          // Continue scanning if we have more movies (per scan 1MB limitation)
+          document.getElementById('textarea').innerHTML += "Scanning for more..." + "\n";
+          params.ExclusiveStartKey = data.LastEvaluatedKey;
+          docClient.scan(params, onScan);
+      }
+  }
+
+}
+
 // function processFile(evt) {
 //     // document.getElementById('textarea').innerHTML = "";
 //     document.getElementById('textarea').innerHTML += "Importing use statistics from DnamoDB. Please wait..." + "\n";
@@ -116,6 +148,7 @@ var docClient = new AWS.DynamoDB.DocumentClient();
 
         <div class="container">
           <!-- <input type="file" id="fileinput" accept='application/json'/> -->
+          <input id="scanData" type="button" value="Scan" onclick="scanData();" />
           <br><br>
           <textarea readonly id= "textarea" style="width:800px; height:400px"></textarea>
           <!-- <script>
