@@ -104,9 +104,6 @@ DictionaryGame.map = DictionaryGame.map || {};
             definition_words = definitions[j].split(" ");
             bodyAppend(definition_words);
             $('#main').append($('<br>'));
-            console.log('looping');
-            console.log(definitions);
-            console.log(j);
         }
     }
 
