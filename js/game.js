@@ -97,9 +97,10 @@ DictionaryGame.map = DictionaryGame.map || {};
         console.log('Response received from API: ', result);
         $('#main').empty();
         $('#main').append($("<p>Moves: "+moves+" Current word: "+current+"</p>"));
-        if (! result.hasOwnProperty('Associated words')) {
+        if (typeof result === 'undefined' || ! result.hasOwnProperty('Associated words')) {
            $('#main').append($("<p>" + current +" doesn't seem to have a definition! Here's your previous word:</p>"));
            bodyAppend([previous]);
+           return;
         }
         words = result['Associated words'];
         definitions = result['Definitions'];
@@ -116,9 +117,10 @@ DictionaryGame.map = DictionaryGame.map || {};
     }
 
     function completeWinSave(result) {
+        $("#main").empty();
         var body = $("#main");
         // If no 'score' in result, return
-        if (! result.hasOwnProperty("score"))
+        if (typeof result === 'undefined' || ! result.hasOwnProperty("score"))
             return;
         score = result['score']
         highscore = result['highscore']
@@ -146,8 +148,10 @@ DictionaryGame.map = DictionaryGame.map || {};
 
     function handleRequestClick(event) {
         $('#main').empty();
+        $('#main').append($("<p>Loading . . .</p>"));
         moves = moves + 1;
         var word = normalizeWord(event.data);
+        console.log(word);
         if (word.localeCompare(end) == 0) {
             winScreen();
             saveWin();
