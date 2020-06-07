@@ -47,14 +47,15 @@ function processFile(evt) {
             var allResults = JSON.parse(contents);
 
             allResults.forEach(function (result) {
-                document.getElementById('textarea').innerHTML += "Processing: " + result.title + "\n";
+                document.getElementById('textarea').innerHTML += "Processing: " + result.word + "\n";
                 var params = {
-                    TableName: "Times accessed",
+                    TableName: "words",
                     Item: {
                         "word": result.word,
                         "clicks": result.clicks,
                     }
                 };
+                //if there is an error
                 docClient.put(params, function (err, data) {
                     if (err) {
                         document.getElementById('textarea').innerHTML += "Unable to add word: " + count + result.word + "\n";
@@ -112,13 +113,15 @@ function processFile(evt) {
             </div>
 
         </nav>
+
         <div class="container">
           <input type="file" id="fileinput" accept='application/json'/>
           <br><br>
           <textarea readonly id= "textarea" style="width:800px; height:400px"></textarea>
-          <script>
+          <!-- <script>
             document.getElementById('fileinput').addEventListener('change', processFile, false);
-          </script>
+          </script> -->
+
         </div>
         <footer class="tm-footer row tm-mt-small">
             <div class="col-12 font-weight-light">
