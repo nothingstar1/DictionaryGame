@@ -55,7 +55,7 @@ DictionaryGame.map = DictionaryGame.map || {};
             error: function ajaxError(jqXHR, textStatus, errorThrown) {
                 console.error('Error requesting word: ', textStatus, ', Details: ', errorThrown);
                 console.error('Response: ', jqXHR.responseText);
-                alert('An error occured when getting the next word:\n' + jqXHR.responseText);
+                completeRequest();
             }
         });
     }
@@ -76,7 +76,7 @@ DictionaryGame.map = DictionaryGame.map || {};
             error: function ajaxError(jqXHR, textStatus, errorThrown) {
                 console.error('Error requesting word: ', textStatus, ', Details: ', errorThrown);
                 console.error('Response: ', jqXHR.responseText);
-                alert('An error occured when getting the next word:\n' + jqXHR.responseText);
+                alert('An error occured when saving game:\n' + jqXHR.responseText);
             }
         });
     }
