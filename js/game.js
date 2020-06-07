@@ -83,10 +83,10 @@ DictionaryGame.map = DictionaryGame.map || {};
     function completeGameSetup(result) {
         console.log('Response received from API: ', result);
         moves = 0;
-        start = normalizeWord("horse");
+        start = normalizeWord(result['start_word']);
         current = start;
-        end = normalizeWord("bat");
-        parameterUpdate("Start: " + start + "End: " + end); // Start and end words from api
+        end = normalizeWord(result['end_word']);
+        parameterUpdate("Start: " + start + " End: " + end); // Start and end words from api
         $('#main').empty();
         bodyAppend([start]); // The start word, in the body (and therefore linked)
     }
