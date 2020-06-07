@@ -6,8 +6,10 @@ DictionaryGame.map = DictionaryGame.map || {};
 (function gameScopeWrapper($) {
     var authToken;
     var moves = 0;
+    // Words
     var start;
     var end;
+    var current;
 
     DictionaryGame.authToken.then(function setAuthToken(token) {
         if (token) {
@@ -82,6 +84,7 @@ DictionaryGame.map = DictionaryGame.map || {};
         console.log('Response received from API: ', result);
         moves = 0;
         start = normalizeWord("horse");
+        current = start;
         end = normalizeWord("bat");
         parameterUpdate("Start: " + start + "End: " + end); // Start and end words from api
         bodyUpdate([start]); // The start word, in the body (and therefore linked)
@@ -120,6 +123,7 @@ DictionaryGame.map = DictionaryGame.map || {};
             winScreen();
             return;
         }
+        current = word;
         nextWord(word);
     }
 
@@ -127,7 +131,7 @@ DictionaryGame.map = DictionaryGame.map || {};
         // clear the #main div
         $('#main').empty();
         var body = $("#main");
-        body.append($("<p>Moves: "+moves+"</p>"));
+        body.append($("<p>Moves: "+moves+" Current word: "+current+"</p>"));
         // for each word 
         for(i = 0; i < words.length; i++) {
         	var word = words[i];
