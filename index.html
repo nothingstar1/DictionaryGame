@@ -43,67 +43,30 @@ function scanData(){
     var params = {
       TableName: "Words"
       ProjectionExpression: "clicks"
-    }
+    };
     docClient.scan(params, onScan);
 
+
+
+  function onScan(err, data){
+
+        if (err) {
+            document.getElementById('textarea').innerHTML += "Unable to scan the table: " + "\n" + JSON.stringify(err, undefined, 2);
+        } else {
+            // Print all the movies
+            document.getElementById('textarea').innerHTML += "Scan succeeded. " + "\n";
+            data.Items.forEach(function(word) {
+                document.getElementById('textarea').innerHTML += Words.word + " has been accessed" + Words.clicks + " times. ";
+            });
+
+            // Continue scanning if we have more movies (per scan 1MB limitation)
+            document.getElementById('textarea').innerHTML += "Scanning for more..." + "\n";
+            params.ExclusiveStartKey = data.LastEvaluatedKey;
+            docClient.scan(params, onScan);
+        }
+    }
+
 }
-
-function onScan(err, data){
-
-      if (err) {
-          document.getElementById('textarea').innerHTML += "Unable to scan the table: " + "\n" + JSON.stringify(err, undefined, 2);
-      } else {
-          // Print all the movies
-          document.getElementById('textarea').innerHTML += "Scan succeeded. " + "\n";
-          data.Items.forEach(function(word) {
-              document.getElementById('textarea').innerHTML += Words.word + " has been accessed" + Words.clicks + " times. ";
-          });
-
-          // Continue scanning if we have more movies (per scan 1MB limitation)
-          document.getElementById('textarea').innerHTML += "Scanning for more..." + "\n";
-          params.ExclusiveStartKey = data.LastEvaluatedKey;
-          docClient.scan(params, onScan);
-      }
-  }
-
-}
-
-// function processFile(evt) {
-//     // document.getElementById('textarea').innerHTML = "";
-//     document.getElementById('textarea').innerHTML += "Importing use statistics from DnamoDB. Please wait..." + "\n";
-//     var file = evt.target.files[0];
-//     if (file) {
-//         var r = new FileReader();
-//         r.onload = function(e) {
-//             var contents = e.target.result;
-//             var allResults = JSON.parse(contents);
-//
-//             allResults.forEach(function (result) {
-//                 document.getElementById('textarea').innerHTML += "Processing: " + result.word + "\n";
-//                 var params = {
-//                     TableName: "words",
-//                     Item: {
-//                         "word": result.word,
-//                         "clicks": result.clicks,
-//                     }
-//                 };
-//                 //if there is an error
-//                 docClient.put(params, function (err, data) {
-//                     if (err) {
-//                         document.getElementById('textarea').innerHTML += "Unable to add word: " + count + result.word + "\n";
-//                         document.getElementById('textarea').innerHTML += "Error JSON: " + JSON.stringify(err) + "\n";
-//                     } else {
-//                         document.getElementById('textarea').innerHTML += "PutItem succeeded: " + result.word + "\n";
-//                         textarea.scrollTop = textarea.scrollHeight;
-//                     }
-//                 });
-//             });
-//     };
-//         r.readAsText(file);
-//     } else {
-//         alert("Could not read movie data file");
-//     }
-// }
 
 </script>
 </head>
