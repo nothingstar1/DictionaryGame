@@ -71,7 +71,7 @@ DictionaryGame.map = DictionaryGame.map || {};
                 score: moves
             }),
             contentType: 'application/json',
-            success: completeRequest, // use a different function
+            success: completeWinSave,
             error: function ajaxError(jqXHR, textStatus, errorThrown) {
                 console.error('Error requesting word: ', textStatus, ', Details: ', errorThrown);
                 console.error('Response: ', jqXHR.responseText);
@@ -108,6 +108,14 @@ DictionaryGame.map = DictionaryGame.map || {};
         }
     }
 
+    function completeWinSave(result) {
+        var body = $("#main");
+        score = result['score']
+        highscore = result['highscore']
+        num_games = result['num_games']
+        body.append($("<h2>Moves: " + score + " Personal Best: " + highscore + " Total Games Played: " + num_games + " </h2>"));
+    }
+
     // Register click handler for #request button
     $(function onDocReady() {
         gameSetup();
@@ -127,13 +135,12 @@ DictionaryGame.map = DictionaryGame.map || {};
     }
 
     function handleRequestClick(event) {
-        // TODO -- loading?
         $('#main').empty();
         moves = moves + 1;
         var word = normalizeWord(event.data);
         if (word.localeCompare(end) == 0) {
-            saveWin();
             winScreen();
+            saveWin();
             return;
         }
         current = word;
