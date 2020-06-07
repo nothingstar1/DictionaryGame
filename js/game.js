@@ -84,9 +84,9 @@ DictionaryGame.map = DictionaryGame.map || {};
     function completeGameSetup(result) {
         console.log('Response received from API: ', result);
         moves = 0;
-        start = 'horse'; //normalizeWord(result['start_word']);
+        start = normalizeWord(result['start_word']);
         current = start;
-        end = 'animal'; //normalizeWord(result['end_word']);
+        end = normalizeWord(result['end_word']);
         parameterUpdate("Start: " + start + " End: " + end); // Start and end words from api
         $('#main').empty();
         $('#main').append($('<p>Click the word to start: </p>'));
