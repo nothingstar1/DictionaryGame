@@ -36,42 +36,42 @@ AWS.config.update({
 
 var docClient = new AWS.DynamoDB.DocumentClient();
 
-function processFile(evt) {
-    // document.getElementById('textarea').innerHTML = "";
-    document.getElementById('textarea').innerHTML += "Importing use statistics from DnamoDB. Please wait..." + "\n";
-    var file = evt.target.files[0];
-    if (file) {
-        var r = new FileReader();
-        r.onload = function(e) {
-            var contents = e.target.result;
-            var allResults = JSON.parse(contents);
-
-            allResults.forEach(function (result) {
-                document.getElementById('textarea').innerHTML += "Processing: " + result.word + "\n";
-                var params = {
-                    TableName: "words",
-                    Item: {
-                        "word": result.word,
-                        "clicks": result.clicks,
-                    }
-                };
-                //if there is an error
-                docClient.put(params, function (err, data) {
-                    if (err) {
-                        document.getElementById('textarea').innerHTML += "Unable to add word: " + count + result.word + "\n";
-                        document.getElementById('textarea').innerHTML += "Error JSON: " + JSON.stringify(err) + "\n";
-                    } else {
-                        document.getElementById('textarea').innerHTML += "PutItem succeeded: " + result.word + "\n";
-                        textarea.scrollTop = textarea.scrollHeight;
-                    }
-                });
-            });
-    };
-        r.readAsText(file);
-    } else {
-        alert("Could not read movie data file");
-    }
-}
+// function processFile(evt) {
+//     // document.getElementById('textarea').innerHTML = "";
+//     document.getElementById('textarea').innerHTML += "Importing use statistics from DnamoDB. Please wait..." + "\n";
+//     var file = evt.target.files[0];
+//     if (file) {
+//         var r = new FileReader();
+//         r.onload = function(e) {
+//             var contents = e.target.result;
+//             var allResults = JSON.parse(contents);
+//
+//             allResults.forEach(function (result) {
+//                 document.getElementById('textarea').innerHTML += "Processing: " + result.word + "\n";
+//                 var params = {
+//                     TableName: "words",
+//                     Item: {
+//                         "word": result.word,
+//                         "clicks": result.clicks,
+//                     }
+//                 };
+//                 //if there is an error
+//                 docClient.put(params, function (err, data) {
+//                     if (err) {
+//                         document.getElementById('textarea').innerHTML += "Unable to add word: " + count + result.word + "\n";
+//                         document.getElementById('textarea').innerHTML += "Error JSON: " + JSON.stringify(err) + "\n";
+//                     } else {
+//                         document.getElementById('textarea').innerHTML += "PutItem succeeded: " + result.word + "\n";
+//                         textarea.scrollTop = textarea.scrollHeight;
+//                     }
+//                 });
+//             });
+//     };
+//         r.readAsText(file);
+//     } else {
+//         alert("Could not read movie data file");
+//     }
+// }
 
 </script>
 </head>
